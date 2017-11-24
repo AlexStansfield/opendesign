@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
     Route::post('brief', 'BriefController@store');
     Route::put('brief/{article}', 'BriefController@update');
     Route::delete('brief/{article}', 'BriefController@delete');
+    Route::get('brief/{id}/designs', 'BriefController@getDesigns');
 //});
 
 /**

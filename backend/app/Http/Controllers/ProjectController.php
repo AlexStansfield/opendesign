@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Project as ProjectResource;
+use App\Http\Resources\ProjectCollection;
 use App\Project;
 use App\Services\GitHubService;
 use Illuminate\Http\Request;
@@ -61,7 +63,9 @@ class ProjectController extends Controller
         $project->link = $gitHubRepo->html_url;
         $project->save();
 
-        return response()->json($this->getProjectApiObject($project), 201);
+
+        ProjectResource::withoutWrapping();
+        return response()->json(new ProjectResource($project), 201);
     }
 
     /**
@@ -69,12 +73,7 @@ class ProjectController extends Controller
      */
     public function getAll()
     {
-        $projects = [];
-        foreach (Project::all() as $project) {
-            $projects[] = $this->getProjectApiObject($project);
-        }
-
-        return $projects;
+        return new ProjectCollection(Project::all());
     }
 
     /**
@@ -89,22 +88,7 @@ class ProjectController extends Controller
             return response()->json(['message' => 'Not Found'], 404);
         }
 
-        return $this->getProjectApiObject($project);
-    }
-
-    /**
-     * @param Project $project
-     * @return array
-     */
-    protected function getProjectApiObject(Project $project)
-    {
-        return [
-            'id' => $project->id,
-            'name' => $project->name,
-            'avatar' => $project->avatar,
-            'description' => $project->description,
-            'repo' => $project->repo,
-            'link' => $project->link
-        ];
+        ProjectResource::withoutWrapping();
+        return new ProjectResource($project);
     }
 }

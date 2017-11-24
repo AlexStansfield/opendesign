@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Brief;
 use App\Http\Resources\Brief as BriefResource;
-use Intervention\Image\Facades\Image;
+use App\Http\Resources\DesignCollection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class BriefController extends Controller
 {
-    public function show($id) {
+    public function show($id)
+    {
         try {
             $brief = Brief::findOrFail($id);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 
@@ -40,7 +42,8 @@ class BriefController extends Controller
                 'user_id',
                 'title',
                 'description',
-                'type']) +
+                'type'
+            ]) +
             ['status' => 'open']
         );
 
@@ -51,7 +54,8 @@ class BriefController extends Controller
                 if (isset($imagebase64[0])) {
                     Image::make(file_get_contents($imagebase64[0]))->save($path);
                 }
-            }catch (Exception $e) {}
+            } catch (Exception $e) {
+            }
 
             $brief->briefMedias()->create(['file_name' => $path]);
         }
@@ -68,7 +72,7 @@ class BriefController extends Controller
     {
         try {
             $brief = Brief::findOrFail($id);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 
@@ -98,7 +102,7 @@ class BriefController extends Controller
     {
         try {
             $brief = Brief::findOrFail($id);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 
@@ -112,4 +116,18 @@ class BriefController extends Controller
         return 204;
     }
 
+    /**
+     * @param $id
+     * @return DesignCollection|\Illuminate\Http\JsonResponse
+     */
+    public function getDesigns($id)
+    {
+        try {
+            $brief = Brief::findOrFail($id);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+
+        return new DesignCollection($brief->designs);
+    }
 }

@@ -30,4 +30,12 @@ class Design extends Model
     {
         return $this->hasMany('App\Comment');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function brief()
+    {
+        return $this->belongsTo('App\Brief');
+    }
 }
