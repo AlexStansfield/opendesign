@@ -1,0 +1,7 @@
+.projectCard {
+    /*background-color: lightgrey;*/
+}
+
+.ui.celled.grid.projectCard .row .column.image {
+    padding: 0;
+}
