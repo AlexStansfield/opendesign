@@ -6,16 +6,16 @@ use App\Brief;
 use App\Http\Resources\Brief as BriefResource;
 use App\Http\Resources\DesignCollection;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\Design as DesignResource;
+use Intervention\Image\Facades\Image;
 
 class BriefController extends Controller
 {
-    public function show($id) {
+    public function show($id)
+    {
         try {
             $brief = Brief::findOrFail($id);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 
