@@ -13,14 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => 'auth'], function()
-{
+//Route::group(['middleware' => 'auth'], function()
+//{
     Route::get('brief', 'BriefController@index');
     Route::get('brief/{article}', 'BriefController@show');
     Route::post('brief', 'BriefController@store');
     Route::put('brief/{article}', 'BriefController@update');
     Route::delete('brief/{article}', 'BriefController@delete');
-});
+//});
 
 /**
  * Auth

@@ -21,7 +21,7 @@ copy-env-files:
 
 db-migrate:
 	@echo "$(shell echo "\033[0;49;32m---\033[m")" Migrations
-	cd backend && php artisan migrate:refresh --seed
+	cd backend && php artisan migrate:fresh --seed
 
 test: unit feature
 

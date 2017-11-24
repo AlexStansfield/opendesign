@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brief extends Model
 {
+    protected $table = 'brief';
+
     public static $types = [
         'project',
         'proposal'
@@ -17,6 +19,14 @@ class Brief extends Model
     ];
 
     protected $fillable = [
-        'title', 'description', 'type', 'status'
+        'title', 'description', 'project_id', 'user_id', 'type', 'status'
     ];
+
+    /**
+     * Get the comments for the blog post.
+     */
+    public function briefMedias()
+    {
+        return $this->hasMany('App\BriefMedia');
+    }
 }
