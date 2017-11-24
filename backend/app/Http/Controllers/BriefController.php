@@ -6,11 +6,18 @@ use Illuminate\Http\Request;
 use App\Brief;
 use App\Http\Resources\Brief as BriefResource;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Auth;
 
 class BriefController extends Controller
 {
-    public function show() {
-        return new BriefResource();
+    public function show($id) {
+        try {
+            $brief = Brief::findOrFail($id);
+        }catch (\Exception $e) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+
+        return new BriefResource($brief);
     }
 
     /**
@@ -38,7 +45,8 @@ class BriefController extends Controller
         );
 
         foreach ($request->only('images') as $imagebase64) {
-            $path = public_path('uploads/brief-media/' . uniqid());
+            $imageName = uniqid() . '.jpg';
+            $path = public_path('uploads/brief-media/' . $imageName);
             try {
                 if (isset($imagebase64[0])) {
                     Image::make(file_get_contents($imagebase64[0]))->save($path);
@@ -48,7 +56,7 @@ class BriefController extends Controller
             $brief->briefMedias()->create(['file_name' => $path]);
         }
 
-        return $brief;
+        return new BriefResource($brief);
     }
 
     /**
