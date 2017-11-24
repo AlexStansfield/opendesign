@@ -24,6 +24,7 @@ class Brief extends Resource
             'status' => $this->status,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
+            'images' => $this->briefMedias
         ];
     }
 }
