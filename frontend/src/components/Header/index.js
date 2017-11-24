@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import { Link } from 'react-router-dom'
 import logo from '../../logo.svg';
-import {Container, Menu, Segment} from 'semantic-ui-react'
+import {Container, Menu} from 'semantic-ui-react'
 
 export default class Header extends Component {
     state = {activeItem: 'home'};
@@ -11,16 +12,20 @@ export default class Header extends Component {
         return (
             <Menu pointing secondary fixed='top' size='large'>
                 <Container>
-                    <Menu.Item name='Home' active={activeItem === 'Home'} onClick={this.handleItemClick}>
+                    <Link to='/'>
+                      <Menu.Item name='Home' active={activeItem === 'Home'} onClick={this.handleItemClick}>
                         <img src={logo} className="OpenDesign-Logo" alt="OpenDesign"/>
-                    </Menu.Item>
+                      </Menu.Item>
+                    </Link>
                     <Menu.Menu position='right'>
                         <Menu.Item name='Guidelines' active={activeItem === 'Guidelines'}
                                    onClick={this.handleItemClick}/>
                         <Menu.Item name='sign-up' active={activeItem === 'sign-up'}
                                    onClick={this.handleItemClick}/>
-                        <Menu.Item name='login' active={activeItem === 'login'}
+                        <Link to='/login'>
+                          <Menu.Item name='login' active={activeItem === 'login'}
                                    onClick={this.handleItemClick}/>
+                        </Link>
                     </Menu.Menu>
                 </Container>
             </Menu>
