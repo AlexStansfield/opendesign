@@ -47,3 +47,9 @@ Route::post('/comment', 'CommentController@create')->middleware('auth:api');
 Route::put('/comment/{id}', 'CommentController@update')->middleware('auth:api');
 Route::delete('/comment/{id}', 'CommentController@delete')->middleware('auth:api');
 
+/**
+ * Project
+ */
+Route::get('/project', 'ProjectController@getAll');
+Route::get('/project/{id}', 'ProjectController@getOne');
+Route::post('/project', 'ProjectController@create')->middleware('auth:api');
