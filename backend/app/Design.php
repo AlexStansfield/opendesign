@@ -15,6 +15,10 @@ class Design extends Model
      */
     protected $table = 'design';
 
+    protected $fillable = [
+        'title', 'description', 'file_name', 'brief_id', 'user_id', 'status'
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -37,5 +41,15 @@ class Design extends Model
     public function brief()
     {
         return $this->belongsTo('App\Brief');
+    }
+
+    public function assets()
+    {
+        return $this->hasMany('App\DesignAsset');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User')->get()->first();
     }
 }

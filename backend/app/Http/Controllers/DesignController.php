@@ -6,6 +6,7 @@ use App\Design;
 use App\Http\Resources\CommentCollection;
 use App\Like;
 use DateTime;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -101,76 +102,110 @@ class DesignController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
-
+        // Filter options would be helpful for users
+        // $filterOptions = $request->all();
+        $userId = Auth::user()->id;
+        return new JsonResponse(Design::where('user_id', $userId)->get());
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
+        $rules = [
+            'brief_id' => 'required|int|exists:brief,id',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'file_name' => 'required|string',
+            'user_id' => 'required|int|exists:user,id',
+            'status' => 'required|string'
+        ];
 
+        try {
+            $validData = $request->validate($rules);
+        } catch (ValidationException $exception) {
+            return new JsonResponse($exception->errors(), JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $design = new Design($validData);
+        $design->save();
+
+        return new JsonResponse($design, JsonResponse::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Design  $design
-     * @return \Illuminate\Http\Response
+     * @param int $id Design id
+     * @return JsonResponse
      */
-    public function show(DesignController $design)
+    public function show($id)
     {
-        //
-    }
+        $design = Design::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Design  $design
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DesignController $design)
-    {
-        //
+        if (null === $design) {
+            return new JsonResponse(['Design not found', JsonResponse::HTTP_NOT_FOUND]);
+        }
+
+        $brief = $design->brief();
+        return new JsonResponse(
+            array_merge(['brief' => $brief], $design->toArray())
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Design  $design
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, DesignController $design)
+    public function update(Request $request, Design $design)
     {
-        //
+        $rules = [
+            'brief_id' => 'int|exists:brief,id',
+            'title' => 'string',
+            'description' => 'string',
+            'file_name' => 'string',
+            'user_id' => 'int|exists:user,id',
+            'status' => 'string'
+        ];
+
+        try {
+            $request->validate($rules);
+            $toSave = $request->all() + $design->toArray();
+
+            Design::where('id', $toSave['id'])->update($toSave);
+
+            return new JsonResponse($toSave, JsonResponse::HTTP_OK);
+        } catch (ValidationException $exception) {
+            return new JsonResponse($exception->errors());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Design  $design
-     * @return \Illuminate\Http\Response
+     * @param  int $id Design id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(DesignController $design)
+    public function destroy($id)
     {
-        //
+        try {
+            $design = Design::find($id);
+
+            if (null === $design) {
+                return new JsonResponse(sprintf("Design %d not Found.", $id), JsonResponse::HTTP_NOT_FOUND);
+            }
+            Design::destroy($id);
+
+            return new JsonResponse(sprintf("Design %d has been deleted.", $id));
+        } catch (Exception $exception) {
+            die($exception->getMessage());
+        }
     }
 }

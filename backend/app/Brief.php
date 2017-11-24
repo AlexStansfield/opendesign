@@ -54,4 +54,10 @@ class Brief extends Model
     {
         return $this->hasMany('App\Design');
     }
+
+    public function project()
+    {
+        $project = $this->belongsTo('App\Project');
+        return $project->get()->first();
+    }
 }
