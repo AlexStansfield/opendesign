@@ -18,8 +18,8 @@ class CreateInitialSchema extends Migration
             $table->string('github_id');
             $table->string('name', 100);
             $table->text('description');
-            $table->string('repo', 100);
-            $table->string('link', 100);
+            $table->string('repo', 255);
+            $table->string('link', 255);
             $table->string('type', 20);
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
@@ -51,6 +51,7 @@ class CreateInitialSchema extends Migration
         Schema::create('brief_media', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('brief_id')->unsigned();
+            $table->string('file_name');
             $table->dateTime('created_at');
             $table->foreign('brief_id')->references('id')->on('brief');
         });
@@ -59,6 +60,7 @@ class CreateInitialSchema extends Migration
             $table->increments('id');
             $table->string('title', 100);
             $table->text('description');
+            $table->string('file_name');
             $table->integer('brief_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->string('status', 100);
@@ -70,8 +72,8 @@ class CreateInitialSchema extends Migration
 
         Schema::create('design_asset', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('file_name');
             $table->integer('brief_id')->unsigned();
+            $table->string('file_name');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
             $table->foreign('brief_id')->references('id')->on('brief');
