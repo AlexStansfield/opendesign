@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use stdClass;
 
 /**
@@ -13,6 +14,7 @@ class GitHubService
 {
     const ENDPOINT_ACCESS_TOKEN = 'https://github.com/login/oauth/access_token';
     const ENDPOINT_USER = 'https://api.github.com/user';
+    const ENDPOINT_REPOS = 'https://api.github.com/repos';
 
     /**
      * @var string
@@ -87,6 +89,24 @@ class GitHubService
             self::ENDPOINT_USER,
             ['headers' => array_merge($this->headers, $this->getAccessTokenHeader())]
         );
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * @param string $repo
+     * @return stdClass
+     */
+    public function getRepo($repo)
+    {
+        try {
+            $response = $this->http->get(
+                self::ENDPOINT_REPOS . '/' . $repo,
+                ['headers' => $this->headers]
+            );
+        } catch (ClientException $e) {
+            return null;
+        }
 
         return json_decode($response->getBody());
     }
