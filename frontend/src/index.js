@@ -6,8 +6,15 @@ import registerServiceWorker from './registerServiceWorker';
 
 import './index.css';
 import configureStore from './redux/configureStore'
+import createSagaMiddleware from 'redux-saga'
+import { compose, applyMiddleware } from 'redux'
+import rootSaga from './sagas'
 
-const store = configureStore();
+const sagaMiddleware = createSagaMiddleware()
+
+const store = configureStore({}, compose(applyMiddleware(sagaMiddleware)));
+
+sagaMiddleware.run(rootSaga)
 
 ReactDOM.render(
   (<BrowserRouter><App store={store} /></BrowserRouter>),
