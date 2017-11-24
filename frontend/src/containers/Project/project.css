@@ -1,0 +1,61 @@
+.project-main {
+    border-radius: 4px;
+    background-color: #fafbfc;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 4px 5px 0 rgba(0, 0, 0, 0.14);
+    padding: 8px;
+    font-size:18px;
+    color: #4a4a4a;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.project-main .header {
+    font-size: 26px;
+    padding-top: 8px;
+}
+
+.project-main a{
+    color: #4184f3;
+    text-decoration: none;
+}
+
+.project-main a:hover {
+    text-decoration: none;
+}
+
+.project-main .side-links {
+    font-family: Roboto sans-serif;
+    font-size: 14px;
+    letter-spacing: 0;
+    font-weight:500;
+    text-align: center;
+    padding-top: 8px;
+}
+
+.project-main .side-links button {
+    border-radius: 2px;
+    border: solid 1px #4184f3;
+    background: transparent;
+    color: #4184f3;
+}
+
+.project-main .side-links button:hover {
+    color: #fafbfc;
+    background: #4184f3;
+}
+.no-padding {
+    padding: 0;
+}
+
+
+.shadowy-card {
+    border-radius: 4px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.14);
+    padding: 24px 16px;
+    margin-bottom: 16px;
+}
+
+
+.shadowy-card div.push-down-eight {
+    padding-top: 8px;
+}

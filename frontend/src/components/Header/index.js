@@ -14,7 +14,7 @@ export default class Header extends Component {
             <Menu pointing fixed='top' size='large' inverted>
                 <Container>
                     <Link to='/'>
-                      <Menu.Item name='Home' active={activeItem === 'Home'} onClick={this.handleItemClick} as='span'>
+                      <Menu.Item name='Home' active={activeItem === 'Home'} onClick={this.handleItemClick} className='header-logo'>
                         <img src={logo} className="OpenDesign-Logo" alt="OpenDesign" />
                       </Menu.Item>
                     </Link>
@@ -23,10 +23,13 @@ export default class Header extends Component {
                                    onClick={this.handleItemClick} />
                         <Menu.Item name='sign-up' active={activeItem === 'sign-up'}
                                    onClick={this.handleItemClick} />
-                        <Link to='/login'>
                           <Menu.Item name='login' active={activeItem === 'login'}
-                                   onClick={this.handleItemClick} as='span' />
-                        </Link>
+                                   onClick={this.handleItemClick}>
+                            <Link to='/login'>
+                              Login
+                            </Link>
+                          </Menu.Item>
+
                     </Menu.Menu>
                 </Container>
             </Menu>
