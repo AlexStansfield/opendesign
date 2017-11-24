@@ -13,8 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth'], function()
+{
+    Route::get('brief', 'BriefController@index');
+    Route::get('brief/{article}', 'BriefController@show');
+    Route::post('brief', 'BriefController@store');
+    Route::put('brief/{article}', 'BriefController@update');
+    Route::delete('brief/{article}', 'BriefController@delete');
 });
 
 /**
