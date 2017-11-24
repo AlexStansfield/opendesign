@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="bootstrap/app.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
+    <testsuites>
+        <testsuite name="Integration">
+            <directory>./tests/Integration</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+            <exclude>
+                <file>./app/Http/routes.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="API_DEBUG" value="true"/>
+        <env name="APP_DEBUG" value="true"/>
+        <env name="APP_KEY" value="base64:e5eKRl2DPr9449whewidM/W7q4GHlScttBIWSwP4Lnw="/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="DB_CONNECTION" value="test"/>
+        <env name="DB_SCHEMA" value="public"/>
+    </php>
+</phpunit>
