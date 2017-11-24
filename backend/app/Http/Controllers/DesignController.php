@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Design;
 use App\Like;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,6 +79,35 @@ class DesignController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * @param int $id
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function getComments($id)
+    {
+        $design = Design::find($id);
+
+        // Check design exists
+        if (null === $design) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+
+        // Build comment list
+        // @todo pagination
+        $comments = [];
+        foreach ($design->comments as $comment) {
+            $comments[] = [
+                'id' => $comment->id,
+                'username' => $comment->user->username,
+                'comment' => $comment->comment,
+                'created_at' => $comment->created_at->format(DateTime::ATOM),
+                'updated_at' => $comment->updated_at->format(DateTime::ATOM)
+            ];
+        }
+
+        return $comments;
     }
 
     /**
