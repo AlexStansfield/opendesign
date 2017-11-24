@@ -22,4 +22,12 @@ class Design extends Model
     {
         return $this->hasMany('App\Like');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }
