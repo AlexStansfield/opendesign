@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../logo.svg';
+import logo from '../../logo_horizontal_white.svg';
 import {Container, Menu} from 'semantic-ui-react'
+import './header.css'
 
 export default class Header extends Component {
     state = {activeItem: 'home'};
@@ -10,7 +11,7 @@ export default class Header extends Component {
     render() {
         const {activeItem} = this.state;
         return (
-            <Menu pointing secondary fixed='top' size='large'>
+            <Menu pointing fixed='top' size='large' inverted>
                 <Container>
                     <Link to='/'>
                       <Menu.Item name='Home' active={activeItem === 'Home'} onClick={this.handleItemClick} as='span'>
