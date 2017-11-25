@@ -34,11 +34,11 @@ Route::get('/auth/test', 'AuthController@test')->middleware('auth:api');
  * Design
  */
 Route::prefix('design')->group(function () {
-    Route::get('/', 'DesignController@index')->middleware('jsonapi');
-    Route::post('/', 'DesignController@create')->middleware('jsonapi');
-    Route::get('/{design}', 'DesignController@show')->middleware('jsonapi');
-    Route::post('/{design}', 'DesignController@update')->middleware('jsonapi');
-    Route::delete('/{design}', 'DesignController@destroy')->middleware('jsonapi');
+    Route::get('/', 'DesignController@getAll');
+    Route::post('/', 'DesignController@create')->middleware('auth:api');
+    Route::get('/{id}', 'DesignController@getOne');
+    Route::put('/{id}', 'DesignController@update')->middleware('auth:api');
+    Route::delete('/{id}', 'DesignController@delete')->middleware('auth:api');
     Route::get('{id}/brief', 'DesignController@showBrief');
     Route::get('{id}/likes', 'DesignController@getLikes');
     Route::post('{id}/like', 'DesignController@addLike')->middleware('auth:api');

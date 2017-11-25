@@ -5,17 +5,33 @@ namespace App\Http\Controllers;
 use App\Brief;
 use App\Http\Resources\Brief as BriefResource;
 use App\Http\Resources\DesignCollection;
+use App\Services\ImageUploaderService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Facades\Image;
 
+/**
+ * Class BriefController
+ * @package App\Http\Controllers
+ */
 class BriefController extends Controller
 {
+    /**
+     * @var ImageUploaderService
+     */
+    private $imageUploaderService;
+
+    public function __construct(ImageUploaderService $imageUploaderService)
+    {
+        $this->imageUploaderService = $imageUploaderService;
+    }
+
     public function show($id)
     {
         try {
             $brief = Brief::findOrFail($id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 
@@ -39,7 +55,6 @@ class BriefController extends Controller
         $brief = Brief::create(
             $request->only([
                 'project_id',
-                'user_id',
                 'title',
                 'description',
                 'type'
@@ -47,17 +62,20 @@ class BriefController extends Controller
             ['status' => 'open']
         );
 
-        foreach ($request->only('images') as $imagebase64) {
-            $imageName = uniqid() . '.jpg';
-            $path = public_path('uploads/brief-media/' . $imageName);
+        $user = Auth::user();
+        $brief->user()->associate($user);
+
+        foreach ($request->only('images') as $imageBase64) {
             try {
-                if (isset($imagebase64[0])) {
-                    Image::make(file_get_contents($imagebase64[0]))->save($path);
-                }
+                $image = $this->imageUploaderService->storeBase64(
+                    $request->input($imageBase64[0]),
+                    ImageUploaderService::PATH_BRIEF
+                );
             } catch (Exception $e) {
+                return new JsonResponse(['message' => 'Error decoding image'], 400);
             }
 
-            $brief->briefMedias()->create(['file_name' => $path]);
+            $brief->briefMedias()->create(['file_name' => $image->basename]);
         }
 
         return new BriefResource($brief);
@@ -72,13 +90,11 @@ class BriefController extends Controller
     {
         try {
             $brief = Brief::findOrFail($id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 
         $request->validate([
-            'project_id' => 'required|exists:project,id',
-            'user_id' => 'required|exists:user,id',
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:10',
             'type' => 'required|in:' . implode(',', Brief::$types),
@@ -102,7 +118,7 @@ class BriefController extends Controller
     {
         try {
             $brief = Brief::findOrFail($id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 
@@ -124,7 +140,7 @@ class BriefController extends Controller
     {
         try {
             $brief = Brief::findOrFail($id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 

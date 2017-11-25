@@ -43,13 +43,19 @@ class Design extends Model
         return $this->belongsTo('App\Brief');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function assets()
     {
         return $this->hasMany('App\DesignAsset');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
-        return $this->belongsTo('App\User')->get()->first();
+        return $this->belongsTo('App\User');
     }
 }
