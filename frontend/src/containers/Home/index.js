@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 import './home.css'
 
 class Home extends Component {
-  render () {
+  componentWillMount () {
     this.props.callApi()
+  }
+  render () {
     return (
       <Container>
         <Header>Welcome to Open Design!</Header>
