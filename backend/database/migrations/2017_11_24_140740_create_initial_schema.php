@@ -109,6 +109,12 @@ class CreateInitialSchema extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        $tables = [
+            'project', 'user', 'brief', 'brief_media', 'design', 'design_asset', 'comment', 'like'
+        ];
+
+        foreach ($tables as $table) {
+            Schema::dropIfExists($table);
+        }
     }
 }

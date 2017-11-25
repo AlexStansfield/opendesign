@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Design;
 use App\Http\Resources\CommentCollection;
+use App\Http\Resources\Design as DesignResource;
+use App\Http\Resources\DesignCollection;
 use App\Like;
-use DateTime;
+use App\Services\ImageUploaderService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +19,16 @@ use Illuminate\Support\Facades\Auth;
  */
 class DesignController extends Controller
 {
+    /**
+     * @var ImageUploaderService
+     */
+    private $imageUploaderService;
+
+    public function __construct(ImageUploaderService $imageUploaderService)
+    {
+        $this->imageUploaderService = $imageUploaderService;
+    }
+
     /**
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
@@ -101,76 +115,137 @@ class DesignController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return DesignCollection
      */
-    public function index(Request $request)
+    public function getAll()
     {
-
+        return new DesignCollection(Design::all());
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create(Request $request)
     {
+        $request->validate([
+            'brief_id' => 'required|int|exists:brief,id',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'mock' => 'required|string',
+        ]);
 
-    }
+        // Save the Image
+        try {
+            $image = $this->imageUploaderService->storeBase64(
+                $request->input('mock'),
+                ImageUploaderService::PATH_MOCKS
+            );
+        } catch (Exception $e) {
+            return new JsonResponse(['message' => 'Error decoding image'], 400);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+        $user = Auth::user();
+        $design = new Design();
+        $design->brief_id = $request->input('brief_id');
+        $design->title = $request->input('title');
+        $design->description = $request->input('description');
+        $design->status = 'pending';
+        $design->file_name = $image->basename;
+        $design->user()->associate($user);
+        $design->save();
 
+        return new JsonResponse(new DesignResource($design), JsonResponse::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Design  $design
-     * @return \Illuminate\Http\Response
+     * @param int $id Design id
+     * @return DesignResource|JsonResponse
      */
-    public function show(DesignController $design)
+    public function getOne($id)
     {
-        //
-    }
+        $design = Design::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Design  $design
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DesignController $design)
-    {
-        //
+        if (null === $design) {
+            return new JsonResponse(['Design not found', JsonResponse::HTTP_NOT_FOUND]);
+        }
+
+        DesignResource::withoutWrapping();
+        return new DesignResource($design);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Design  $design
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return DesignResource|JsonResponse
      */
-    public function update(Request $request, DesignController $design)
+    public function update(Request $request, $id)
     {
-        //
+        $design = Design::find($id);
+
+        if (null === $design) {
+            return new JsonResponse(['Design not found', JsonResponse::HTTP_NOT_FOUND]);
+        }
+
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'mock' => 'string'
+        ]);
+
+
+        $user = Auth::user();
+        if ($user->id !== $design->user_id) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        // Replace the image if they supplied a new one
+        if ($request->input('mock')) {
+            // Save the Image
+            try {
+                $image = $this->imageUploaderService->storeBase64(
+                    $request->input('mock'),
+                    ImageUploaderService::PATH_MOCKS
+                );
+            } catch (Exception $e) {
+                return new JsonResponse(['message' => 'Error decoding image'], 400);
+            }
+
+            $design->file_name = $image->basename;
+        }
+
+        $design->title = $request->input('title');
+        $design->description = $request->input('description');
+        $design->save();
+
+        DesignResource::withoutWrapping();
+        return new DesignResource($design);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Design  $design
-     * @return \Illuminate\Http\Response
+     * @param  int $id Design id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(DesignController $design)
+    public function delete($id)
     {
-        //
+        $design = Design::find($id);
+
+        if (null === $design) {
+            return new JsonResponse(sprintf("Design %d not Found.", $id), JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $user = Auth::user();
+        if ($user->id !== $design->user_id) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $design->delete();
+
+        return response()->json(['success' => true]);
     }
 }

@@ -29,17 +29,29 @@ use Illuminate\Http\Request;
 Route::post('/auth', 'AuthController@auth');
 Route::get('/auth/test', 'AuthController@test')->middleware('auth:api');
 
+
+/*
+ * Design
+ */
+Route::prefix('design')->group(function () {
+    Route::get('/', 'DesignController@getAll');
+    Route::post('/', 'DesignController@create')->middleware('auth:api');
+    Route::get('/{id}', 'DesignController@getOne');
+    Route::put('/{id}', 'DesignController@update')->middleware('auth:api');
+    Route::delete('/{id}', 'DesignController@delete')->middleware('auth:api');
+    Route::get('{id}/brief', 'DesignController@showBrief');
+    Route::get('{id}/likes', 'DesignController@getLikes');
+    Route::post('{id}/like', 'DesignController@addLike')->middleware('auth:api');
+    Route::delete('{id}/like', 'DesignController@removeLike')->middleware('auth:api');
+    Route::get('{id}/comments', 'DesignController@getComments');
+});
 /**
  * Design Likes
  */
-Route::get('/design/{id}/likes', 'DesignController@getLikes');
-Route::post('/design/{id}/like', 'DesignController@addLike')->middleware('auth:api');
-Route::delete('/design/{id}/like', 'DesignController@removeLike')->middleware('auth:api');
 
 /**
  * Design Comments
  */
-Route::get('/design/{id}/comments', 'DesignController@getComments');
 
 /**
  * Comments
@@ -54,3 +66,5 @@ Route::delete('/comment/{id}', 'CommentController@delete')->middleware('auth:api
 Route::get('/project', 'ProjectController@getAll');
 Route::get('/project/{id}', 'ProjectController@getOne');
 Route::post('/project', 'ProjectController@create')->middleware('auth:api');
+
+

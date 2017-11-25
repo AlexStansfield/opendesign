@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\ImageUploaderService;
 use DateTime;
 use Illuminate\Http\Resources\Json\Resource;
 
@@ -21,7 +22,7 @@ class Design extends Resource
             'user_id' => $this->user_id,
             'title' => $this->title,
             'description' => $this->description,
-            'filename' => $this->filename,
+            'file_name' => ImageUploaderService::PATH_MOCKS . $this->file_name,
             'status' => $this->status,
             'created_at' => $this->created_at->format(DateTime::ATOM),
             'updated_at' => $this->updated_at->format(DateTime::ATOM)
