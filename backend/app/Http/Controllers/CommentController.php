@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Design;
+use App\Http\Resources\Comment as CommentResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,8 +36,8 @@ class CommentController extends Controller
         $comment->comment = $request->input('comment');
         $comment->save();
 
-        // Return Comment object (without relations)
-        return response()->json($comment->attributesToArray(), 201);
+        CommentResource::withoutWrapping();
+        return response()->json(new CommentResource($comment), 201);
     }
 
     /**
@@ -67,8 +68,8 @@ class CommentController extends Controller
         $comment->comment = $request->input('comment');
         $comment->save();
 
-        // Return Comment object (without relations)
-        return response()->json($comment->attributesToArray());
+        CommentResource::withoutWrapping();
+        return new CommentResource($comment);
     }
 
     /**
