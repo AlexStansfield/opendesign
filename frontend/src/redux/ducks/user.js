@@ -6,7 +6,6 @@ export const types = {
 export const initialState = {
   code: '',
   token: ''
-
 }
 
 export const actions = {
@@ -19,12 +18,11 @@ export const actions = {
     }
   },
 
-  saveTokenToState : token => {
-    console.log('token', token)
+  saveTokenToState : response => {
     return {
       type: types.SAVE_TOKEN_TO_STATE,
       payload: {
-        token
+        response
       }
     }
   }
@@ -35,7 +33,7 @@ const reducer = (state = initialState, action) => {
     case types.SAVE_TOKEN_TO_STATE:
       return {
         ...state,
-        token: action.payload.token
+        token: action.payload.response.access_token
       }
     case types.SEND_GH_CODE_TO_SERVER:
       return {

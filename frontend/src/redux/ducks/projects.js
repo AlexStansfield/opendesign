@@ -1,20 +1,18 @@
 export const types = {
   REQUEST_ALL_PROJECTS: 'REQUEST_ALL_PROJECTS',
-  REQUEST_ALL_PROJECTS_SUCCESS: 'UPDATE_PROJECTS_STATE'
+  REQUEST_ALL_PROJECTS_SUCCESS: 'REQUEST_ALL_PROJECTS_SUCCESS'
 }
 
 export const initialState = []
 
 export const actions = {
     requestAllProjects: () => {
-      console.log('not called?')
       return {
         type: types.REQUEST_ALL_PROJECTS
       }
     },
 
   requestAllProjectsSucceed : response => {
-    console.log('token', response)
     return {
       type: types.REQUEST_ALL_PROJECTS_SUCCESS,
       payload: {
@@ -27,10 +25,7 @@ export const actions = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.REQUEST_ALL_PROJECTS_SUCCESS:
-      return [
-        ...state,
-        action.payload.response
-      ]
+      return action.payload.response
     case types.REQUEST_ALL_PROJECTS:
     default:
       return state
@@ -38,5 +33,3 @@ const reducer = (state = initialState, action) => {
 }
 
 export default reducer
-
-export const getProjects = state => state.projects
