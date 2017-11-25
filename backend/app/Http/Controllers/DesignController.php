@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Design;
+use App\Http\Resources\CommentCollection;
 use App\Like;
 use DateTime;
 use Illuminate\Http\Request;
@@ -83,7 +84,7 @@ class DesignController extends Controller
 
     /**
      * @param int $id
-     * @return array|\Illuminate\Http\JsonResponse
+     * @return CommentCollection|\Illuminate\Http\JsonResponse
      */
     public function getComments($id)
     {
@@ -94,20 +95,7 @@ class DesignController extends Controller
             return response()->json(['message' => 'Not Found'], 404);
         }
 
-        // Build comment list
-        // @todo pagination
-        $comments = [];
-        foreach ($design->comments as $comment) {
-            $comments[] = [
-                'id' => $comment->id,
-                'username' => $comment->user->username,
-                'comment' => $comment->comment,
-                'created_at' => $comment->created_at->format(DateTime::ATOM),
-                'updated_at' => $comment->updated_at->format(DateTime::ATOM)
-            ];
-        }
-
-        return $comments;
+        return new CommentCollection($design->comments);
     }
 
     /**
