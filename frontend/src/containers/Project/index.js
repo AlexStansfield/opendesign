@@ -6,6 +6,7 @@ export default class Project extends Component {
   render () {
     console.log('Props in project page', this.props)
     const projectId = this.props.match.params.id
+    console.log(projectId)
 
     return(
       <Container className='project-main'>
@@ -30,10 +31,10 @@ export default class Project extends Component {
             </Grid.Column>
             <Grid.Column width={3} className='side-links'>
               <p>
-                <a href='#'>Share this project</a>
+                <a href='#share'>Share this project</a>
               </p>
               <p>
-                <a href='#'>Contact owner</a>
+                <a href='#contact'>Contact owner</a>
               </p>
               <Button>
                 Add a brief

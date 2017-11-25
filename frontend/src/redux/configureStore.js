@@ -1,15 +1,17 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import createLogger from 'redux-logger'
+import { createStore, combineReducers } from 'redux'
+import user from './ducks/user'
+import projects from './ducks/projects'
+/*import createLogger from 'redux-logger'*/
 
-const nullReducer = (state = {}, action) => state
+/*const nullReducer = (state = {}, action) => state*/
 
-const createStoreWithMiddleware = applyMiddleware(createLogger)(createStore)
+/*const createStoreWithMiddleware = applyMiddleware(createLogger)(createStore)*/
 
 const reducer = combineReducers({
-  config: nullReducer,
-  entities: nullReducer
+  user,
+  projects
 })
 
-const configureStore = (initialState) => createStoreWithMiddleware(reducer, initialState)
+const configureStore = (initialState, middleware) => createStore(reducer, initialState, middleware)
 
 export default configureStore
