@@ -8,7 +8,6 @@ use App\Http\Resources\Design as DesignResource;
 use App\Http\Resources\DesignCollection;
 use App\Like;
 use App\Services\ImageUploaderService;
-use DateTime;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
