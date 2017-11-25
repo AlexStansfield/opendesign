@@ -72,11 +72,11 @@ class CreateInitialSchema extends Migration
 
         Schema::create('design_asset', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('design_id')->unsigned();
+            $table->integer('brief_id')->unsigned();
             $table->string('file_name');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
-            $table->foreign('design_id')->references('id')->on('design');
+            $table->foreign('brief_id')->references('id')->on('brief');
         });
 
         Schema::create('comment', function (Blueprint $table) {
