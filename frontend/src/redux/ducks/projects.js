@@ -25,7 +25,7 @@ export const actions = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.REQUEST_ALL_PROJECTS_SUCCESS:
-      return action.payload.response
+      return action.payload.response.projects
     case types.REQUEST_ALL_PROJECTS:
     default:
       return state
