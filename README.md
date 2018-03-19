@@ -30,8 +30,8 @@ $ make test
 
 ### Add host files
 ```bash
-127.0.0.1 frontend.dev
-127.0.0.1 backend.dev
+127.0.0.1 opendesign.local
+127.0.0.1 opendesign-backend.local
 ```
 
 ### Connect to other boxes from dev box.
