@@ -5,7 +5,7 @@ composer = $(shell which composer)
 
 install: init
 
-init: copy-env-files db-migrate
+init: composer-install copy-env-files db-migrate
 	cd backend && php artisan key:generate
 	@echo
 	@echo "$(shell echo "\033[0;49;32m---\033[m")" Completed
@@ -32,3 +32,6 @@ unit:
 feature:
 	@echo "$(shell echo "\033[0;49;32m---\033[m")" Feature Test
 	cd backend && vendor/bin/phpunit --testsuite=Feature
+
+composer-install:
+	cd backend && composer install

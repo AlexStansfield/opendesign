@@ -11,25 +11,25 @@ RUN apt-get update && apt-get install -y software-properties-common \
     && add-apt-repository ppa:ondrej/php -y \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C
 
-# PHP Development Tools
 RUN apt-get update && apt-get -y install -q \
-   php7.0-fpm \
-   php7.0-cli \
-   php7.0-dev \
-   php7.0-gd \
-   php7.0-imap \
-   php7.0-intl \
-   php7.0-json \
-   php7.0-mcrypt \
-   php7.0-mysql \
-   php7.0-mbstring \
-   php7.0-ldap \
-   php7.0-zip \
-   php7.0-xml \
-   php7.0-pgsql \
-   php7.0-curl \
+   php7.1 \
+   php7.1-fpm \
+   php7.1-cli \
+   php7.1-dev \
+   php7.1-gd \
+   php7.1-imap \
+   php7.1-intl \
+   php7.1-json \
+   php7.1-mcrypt \
+   php7.1-mysql \
+   php7.1-mbstring \
+   php7.1-ldap \
+   php7.1-zip \
+   php7.1-xml \
+   php7.1-pgsql \
+   php7.1-curl \
    php-pear \
-   php7.0-dev
+   php7.1-dev
 
 # Development Tools
 RUN apt-get update && apt-get install -y -q \

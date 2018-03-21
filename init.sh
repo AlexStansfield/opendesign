@@ -11,11 +11,5 @@ docker-compose build
 docker-compose up -d
 wait
 
-# Development docker container
-cd ${CURRENT_DIR}
-cd backend && git stash && git checkout master && git reset --hard origin/master
-cd ${CURRENT_DIR}
-cd frontend && git stash && git checkout master && git reset --hard origin/master
-
 ## Run make in the dev container
 cd ${CURRENT_DIR} && docker run -t --rm -v $(pwd):/vagrant --net=opendesign opendesign/development:1.0 make install

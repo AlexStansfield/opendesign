@@ -1,11 +1,11 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "opendesign/opendesign",
+    "description": "OpenDesign",
+    "keywords": ["amazing", "stuff"],
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.0.0",
+        "php": "^7.1",
         "doctrine/dbal": "^2.6",
         "barryvdh/laravel-cors": "^0.10.0",
         "fideloper/proxy": "~3.3",
