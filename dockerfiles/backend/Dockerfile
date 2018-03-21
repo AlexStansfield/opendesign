@@ -1,5 +1,4 @@
 FROM opendesign/frontend:1.0
-MAINTAINER Samundra Shrestha <admin@samundra.com.np>
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -10,6 +9,6 @@ WORKDIR /var/www
 ADD conf/php.ini /etc/php/7.1/fpm/99-custom.ini
 ADD conf/www.conf /etc/php/7.1/fpm/pool.d/www.conf
 ADD conf/nginx.conf /etc/nginx/nginx.conf
-ADD conf/env.devel /var/www/.env
+ADD conf/env.dev /var/www/.env
 
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]

@@ -1,5 +1,4 @@
 FROM ubuntu:16.04
-MAINTAINER Samundra Shrestha <samundra.shr@gmail.com>
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -45,7 +44,6 @@ ADD conf/php.ini /etc/php/7.0/fpm/99-custom.ini
 ADD conf/www.conf /etc/php/7.0/fpm/pool.d/www.conf
 ADD conf/supervisord.conf /etc/supervisord.conf
 ADD conf/nginx.conf /etc/nginx/nginx.conf
-ADD conf/env.devel /var/www/.env
 
 RUN mkdir /var/run/php/
 RUN useradd -u 1000 1000

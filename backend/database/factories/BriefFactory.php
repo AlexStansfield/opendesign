@@ -12,13 +12,14 @@ use Faker\Generator as Faker;
 | model instances for testing / seeding your application's database.
 |
 */
-$projects = App\Project::all();
-$users = App\User::all();
 
-$factory->define(App\Brief::class, function (Faker $faker) use ($projects, $users) {
+$factory->define(App\Brief::class, function (Faker $faker) {
+    $projects = App\Project::all()->toArray();
+    $users = App\User::all()->toArray();
+
     return [
-        'project_id' => ($faker->randomElement($projects->toArray()))['id'],
-        'user_id' => ($faker->randomElement($users->toArray()))['id'],
+        'project_id' => $faker->randomElement($projects)['id'],
+        'user_id' => $faker->randomElement($users)['id'],
         'title' => $faker->text(32),
         'description' => $faker->text(32),
         'type' => $faker->text(6),

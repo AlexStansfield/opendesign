@@ -1,5 +1,4 @@
 FROM ubuntu:16.04
-MAINTAINER Samundra Shrestha <samundra.shr@gmail.com>
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 

@@ -11,13 +11,10 @@ services:
       - backend
     ports:
       - 80:80
-      - 8080:8080
 
   backend:
     build: ./dockerfiles/backend
     image: opendesign/backend:1.0
-    expose:
-      - '80'
     volumes:
       - ./backend:/var/www
     links:
@@ -27,8 +24,6 @@ services:
   frontend:
     build: ./dockerfiles/frontend
     image: opendesign/frontend:1.0
-    expose:
-      - 8080
     volumes:
       - ./frontend:/var/www
 

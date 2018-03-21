@@ -1,18 +1,21 @@
 /**
  * Root Saga
  */
-
 import { actions, types } from '../redux/ducks/projects'
 import { all, call, take, put, select } from 'redux-saga/effects'
-import { getCode, actions as userActions, types as userTypes } from '../redux/ducks/user'
+import {
+  getCode,
+  actions as userActions,
+  types as userTypes
+} from '../redux/ducks/user'
 
 // define watchers
 export function * loginFlow () {
   while(true) {
-    yield take(userTypes.SEND_GH_CODE_TO_SERVER)
-    const code = yield select(getCode)
-    console.log('code', code)
-    const fetchWrapper = (code) => (fetch('http://localhost:8000/api/auth', {
+    yield take(userTypes.SEND_GH_CODE_TO_SERVER);
+    const code = yield select(getCode);
+    console.log('code', code);
+    const fetchWrapper = (code) => (fetch('http://api.opendesign.local/api/auth', {
       method: 'post',
       headers: {
         'Accept': 'application/json, text/plain, *!/!*',
@@ -25,9 +28,9 @@ export function * loginFlow () {
       return {response: res}
     },(error) => {
       return {error: error.message || 'Something faulty. We have no idea'}
-    }))
+    }));
 
-    const {response, error} = yield call(fetchWrapper, code)
+    const {response, error} = yield call(fetchWrapper, code);
 
     if (response) {
       yield put(userActions.saveTokenToState(response))
@@ -39,19 +42,17 @@ export function * loginFlow () {
   }
 }
 
-
 export function * getProjects() {
   while(true) {
-    yield take(types.REQUEST_ALL_PROJECTS)
-    const fetchWrapper = () => (fetch('http://localhost:8000/api/project').then(res => res.json()).then(
+    yield take(types.REQUEST_ALL_PROJECTS);
+    const fetchWrapper = () => (fetch('http://api.opendesign.local/api/project').then(res => res.json()).then(
         response => ({response}),
         error => ({error: error.message || 'Something faulty. We have no idea'})
-    ))
-
-    const {response, error} = yield call(fetchWrapper)
+    ));
+    const {response, error} = yield call(fetchWrapper);
 
     if (response) {
-      yield  put(actions.requestAllProjectsSucceed(response))
+      yield  put(actions.requestAllProjectsSucceed(response));
     } else {
       console.log(error);
     }
