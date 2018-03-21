@@ -1,9 +1,29 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro');
 
-.ui.menu .item>img:not(.ui) {
-    width: 10em;
+:root {
+    --jade-green: #34d058;
 }
 
 body {
     font-family: 'Source Sans Pro', sans-serif;
+}
+
+.ui.menu {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+}
+
+.ui.menu .item>img:not(.ui) {
+    width: 10em;
+}
+
+.ui.menu .item:before {
+    display: none;
+}
+
+.ui.menu .item.login-with-github a:not(.ui) {
+    color: var(--jade-green);
+    border-radius: 3px;
+    border: solid 1px var(--jade-green);
+    padding: 5px 14px;
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../logo_horizontal_white.svg';
+import logo from '../../logo_horizontal.svg';
 import {Container, Menu} from 'semantic-ui-react'
 import './header.css'
 
@@ -19,17 +19,18 @@ export default class Header extends Component {
                       </Menu.Item>
                     </Link>
                     <Menu.Menu position='right'>
-                        <Menu.Item name='Guidelines' active={activeItem === 'Guidelines'}
+                        <Menu.Item name='Resources' active={activeItem === 'Resources'}
                                    onClick={this.handleItemClick} />
-                        <Menu.Item name='sign-up' active={activeItem === 'sign-up'}
+                        <Menu.Item name='about-us' active={activeItem === 'about-us'}
                                    onClick={this.handleItemClick} />
-                          <Menu.Item name='login' active={activeItem === 'login'}
-                                   onClick={this.handleItemClick}>
+                        <Menu.Item name='community-guidelines' active={activeItem === 'community-guidelines'}
+                                   onClick={this.handleItemClick}/>
+                        <Menu.Item name='login-with-github' active={activeItem === 'login-with-github'}
+                                   onClick={this.handleItemClick} className={'login-with-github'}>
                             <Link to='/login'>
-                              Login
+                                Login with Github
                             </Link>
-                          </Menu.Item>
-
+                        </Menu.Item>
                     </Menu.Menu>
                 </Container>
             </Menu>
