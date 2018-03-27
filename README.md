@@ -2,10 +2,11 @@
 Open Design Platform
 
 ## Backend Information
-dev url : http://backend.dev
+dev url : http://api.opendesign.local
 
 ## Frontend Information
-dev url: http://frontend.dev
+- dev url: http://opendesign.local (have to manually build everything `cd /frondend` then `yarn build`)
+- dev livereload: `cd /frondend` then `yarn start`
 
 ## Database Credentials
 username : opendesign
@@ -31,7 +32,7 @@ $ make test
 ### Add host files
 ```bash
 127.0.0.1 opendesign.local
-127.0.0.1 opendesign-backend.local
+127.0.0.1 api.opendesign.local
 ```
 
 ### Connect to other boxes from dev box.

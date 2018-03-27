@@ -13,10 +13,10 @@ use Faker\Generator as Faker;
 |
 */
 
-$briefs = App\Brief::all()->toArray();
-$users = App\User::all()->toArray();
+$factory->define(App\Design::class, function (Faker $faker) {
+    $briefs = App\Brief::all()->toArray();
+    $users = App\User::all()->toArray();
 
-$factory->define(App\Design::class, function (Faker $faker) use ($briefs, $users) {
     return [
         'title' => $faker->name,
         'description' => $faker->text(200),
